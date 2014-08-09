@@ -1,0 +1,17 @@
+if(!file.exists("exdata-data-household_power_consumption.zip")){
+  download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip", "exdata-data-household_power_consumption.zip")
+  unzip("exdata-data-household_power_consumption.zip")
+}
+dat<-read.table("household_power_consumption.txt", sep=";",colClasses="character",header=TRUE)
+#lapply(dat,class)
+#sapply(dat,class)
+dat$Date<-as.Date(dat$Date,"%d/%m/%Y")
+subdat <- subset(dat, Date == "2007-02-01" | Date == "2007-02-02")
+subdat$DateTime<-strptime(paste(subdat$Date,subdat$Time),"%Y-%m-%d %H:%M:%S")
+subdat$Global_active_power <- as.numeric(subdat$Global_active_power)
+subdat$Sub_metering_1 <- as.numeric(subdat$Sub_metering_1)
+subdat$Sub_metering_2 <- as.numeric(subdat$Sub_metering_2)
+subdat$Sub_metering_3 <- as.numeric(subdat$Sub_metering_3)
+subdat$Voltage <- as.numeric(subdat$Voltage)
+subdat$Global_reactive_power <- as.numeric(subdat$Global_reactive_power)
+attach(subdat)
